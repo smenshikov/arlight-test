@@ -261,7 +261,7 @@ subscriptionForm.addEventListener('submit', (e) => {
 
 // Add subscriber to list
 function addSubscriber(email) {
-    const listItem = utils.createElement('li', 'subscription__subscriber-item text-muted', email);
+    const listItem = utils.createElement('li', 'subscription__subscriber-item', email);
     subscribersList.appendChild(listItem);
     
     // Animate in

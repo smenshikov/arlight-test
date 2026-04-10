@@ -184,12 +184,6 @@ body {
     font-size: 1.125rem;
 }
 
-/* Common text styles */
-.text-muted {
-    color: var(--text-color);
-    opacity: 0.8;
-}
-
 /* Common transitions */
 .transition-theme {
     transition: background-color 0.3s ease, color 0.3s ease;
