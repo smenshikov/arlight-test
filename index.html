@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adaptive Cards Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="page">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="header__title">Adaptive Cards</h1>
+            <div class="header__tabs-counter">
+                <span class="header__tabs-text">Open tabs:</span>
+                <span class="header__tabs-number" id="tabsCounter">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="main">
+        <div class="container">
+            <!-- Cards grid -->
+            <section class="cards">
+                <h2 class="cards__title visually-hidden">Card Grid</h2>
+                <div class="cards__grid">
+                    <!-- Card 1 -->
+                    <article class="card">
+                        <h3 class="card__title">Web Development</h3>
+                        <p class="card__description">
+                            Modern web development requires knowledge of HTML5, CSS3, and JavaScript. 
+                            Creating responsive layouts with Flexbox and Grid ensures compatibility across all devices.
+                            Performance optimization is key for user experience.
+                        </p>
+                        <button class="card__button" type="button">Learn More</button>
+                    </article>
+
+                    <!-- Card 2 -->
+                    <article class="card">
+                        <h3 class="card__title">UI/UX Design</h3>
+                        <p class="card__description">
+                            User interface design focuses on creating intuitive and visually appealing layouts.
+                            User experience research helps understand user behavior and needs.
+                            Design systems ensure consistency across products.
+                        </p>
+                        <button class="card__button" type="button">Explore</button>
+                    </article>
+
+                    <!-- Card 3 -->
+                    <article class="card">
+                        <h3 class="card__title">Frontend Frameworks</h3>
+                        <p class="card__description">
+                            React, Vue, and Angular are popular frontend frameworks.
+                            Component-based architecture improves code reusability.
+                            State management solutions handle complex application data.
+                        </p>
+                        <button class="card__button" type="button">Discover</button>
+                    </article>
+
+                    <!-- Card 4 -->
+                    <article class="card">
+                        <h3 class="card__title">Performance</h3>
+                        <p class="card__description">
+                            Website performance affects user engagement and SEO rankings.
+                            Lazy loading and code splitting reduce initial load times.
+                            Image optimization and caching strategies improve speed.
+                        </p>
+                        <button class="card__button" type="button">Optimize</button>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Subscription form -->
+            <section class="subscription">
+                <h2 class="subscription__title">Subscribe to Newsletter</h2>
+                <form class="subscription__form" id="subscriptionForm">
+                    <div class="subscription__field-group">
+                        <input 
+                            type="email" 
+                            class="subscription__email" 
+                            id="emailInput"
+                            placeholder="Enter your email"
+                            required
+                        >
+                        <button class="subscription__button" type="submit">Subscribe</button>
+                    </div>
+                    <div class="subscription__error" id="errorMessage"></div>
+                </form>
+                <div class="subscription__subscribers">
+                    <h3 class="subscription__subscribers-title">Subscribers:</h3>
+                    <ul class="subscription__subscribers-list" id="subscribersList">
+                        <li class="subscription__subscriber-item">john@example.com</li>
+                        <li class="subscription__subscriber-item">sarah@example.com</li>
+                        <li class="subscription__subscriber-item">mike@example.com</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Theme toggle button -->
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+        <span class="theme-toggle__icon"> Moon</span>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>
