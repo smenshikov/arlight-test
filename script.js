@@ -37,8 +37,20 @@ const emailInput = document.getElementById('emailInput');
 const errorMessage = document.getElementById('errorMessage');
 const subscribersList = document.getElementById('subscribersList');
 
-// Email validation regex
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Email validation function - checks for @ and dot after @
+function validateEmail(email) {
+    const trimmedEmail = email.trim();
+    
+    // Check if email contains @ and at least one dot after @
+    const atIndex = trimmedEmail.indexOf('@');
+    if (atIndex === -1 || atIndex === 0) return false;
+    
+    const domainPart = trimmedEmail.substring(atIndex + 1);
+    const dotIndex = domainPart.indexOf('.');
+    
+    // Check if there's at least one dot after @ and it's not at the beginning
+    return dotIndex > 0 && dotIndex < domainPart.length - 1;
+}
 
 // Form submission handler
 subscriptionForm.addEventListener('submit', (e) => {
@@ -48,22 +60,22 @@ subscriptionForm.addEventListener('submit', (e) => {
     
     // Validate email
     if (!email) {
-        errorMessage.textContent = 'Please enter your email address';
+        showError('Пожалуйста, введите адрес электронной почты');
         return;
     }
     
-    if (!emailRegex.test(email)) {
-        errorMessage.textContent = 'Please enter a valid email address';
+    if (!validateEmail(email)) {
+        showError('Пожалуйста, введите корректный адрес электронной почты (должен содержать @ и точку после него)');
         return;
     }
     
-    // Check if email already exists
+    // Check if email already exists (case insensitive)
     const existingSubscribers = Array.from(subscribersList.children).map(
-        item => item.textContent.trim()
+        item => item.textContent.trim().toLowerCase()
     );
     
-    if (existingSubscribers.includes(email)) {
-        errorMessage.textContent = 'This email is already subscribed';
+    if (existingSubscribers.includes(email.toLowerCase())) {
+        showError('Этот адрес электронной почты уже подписан');
         return;
     }
     
@@ -96,6 +108,41 @@ function addSubscriber(email) {
         listItem.style.transform = 'translateY(0)';
     }, 10);
 }
+
+// Show error message with smooth animation
+function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.style.opacity = '0';
+    errorMessage.style.transform = 'translateY(-5px)';
+    
+    // Trigger reflow
+    errorMessage.offsetHeight;
+    
+    errorMessage.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    errorMessage.style.opacity = '1';
+    errorMessage.style.transform = 'translateY(0)';
+}
+
+// Hide error message with smooth animation
+function hideError() {
+    if (errorMessage.textContent) {
+        errorMessage.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        errorMessage.style.opacity = '0';
+        errorMessage.style.transform = 'translateY(-5px)';
+        
+        setTimeout(() => {
+            errorMessage.textContent = '';
+            errorMessage.style.transform = 'translateY(0)';
+        }, 300);
+    }
+}
+
+// Input event handler - clear error when user starts typing
+emailInput.addEventListener('input', () => {
+    if (errorMessage.textContent) {
+        hideError();
+    }
+});
 
 // Show success message
 function showSuccessMessage() {
