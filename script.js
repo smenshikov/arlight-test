@@ -7,13 +7,13 @@ const themeIcon = document.querySelector('.theme-toggle__icon');
 const savedTheme = localStorage.getItem('theme') || 'light';
 if (savedTheme === 'dark') {
     page.classList.add('theme-dark');
-    themeIcon.textContent = ' Sun';
+    themeIcon.textContent = ' Солнце';
 }
 
 // Theme toggle event
 themeToggle.addEventListener('click', () => {
     const isDark = page.classList.toggle('theme-dark');
-    themeIcon.textContent = isDark ? ' Sun' : ' Moon';
+    themeIcon.textContent = isDark ? ' Солнце' : ' Луна';
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
 });
 
@@ -45,9 +45,6 @@ subscriptionForm.addEventListener('submit', (e) => {
     e.preventDefault();
     
     const email = emailInput.value.trim();
-    
-    // Clear previous error
-    errorMessage.textContent = '';
     
     // Validate email
     if (!email) {
@@ -115,7 +112,7 @@ function showSuccessMessage() {
         z-index: 1001;
         animation: slideIn 0.3s ease;
     `;
-    successMessage.textContent = 'Successfully subscribed!';
+    successMessage.textContent = 'Успешная подписка!';
     
     document.body.appendChild(successMessage);
     
@@ -160,12 +157,12 @@ const cardButtons = document.querySelectorAll('.card__button');
 
 cardButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
-        const cardTitles = ['Web Development', 'UI/UX Design', 'Frontend Frameworks', 'Performance'];
+        const cardTitles = ['Веб-разработка', 'UI/UX Дизайн', 'Frontend фреймворки', 'Производительность'];
         const messages = [
-            'Exploring web development resources...',
-            'Discovering UI/UX design principles...',
-            'Learning about frontend frameworks...',
-            'Optimizing web performance...'
+            'Изучение ресурсов по веб-разработке...',
+            'Открытие принципов UI/UX дизайна...',
+            'Изучение frontend фреймворков...',
+            'Оптимизация веб-производительности...'
         ];
         
         showNotification(messages[index], cardTitles[index]);
