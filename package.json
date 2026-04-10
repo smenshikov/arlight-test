@@ -4,7 +4,6 @@
   "description": "Adaptive cards with Shared Worker synchronization",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
     "dev": "node server.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
