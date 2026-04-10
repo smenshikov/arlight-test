@@ -3,6 +3,16 @@ let sharedWorker;
 let workerPort;
 let heartbeatInterval;
 
+// Theme constants
+const THEME = {
+    LIGHT: {
+        icon: '🌙'
+    },
+    DARK: {
+        icon: '☀️'
+    }
+};
+
 // Common utilities
 const utils = {
     // Get DOM element safely
@@ -99,10 +109,10 @@ const themeUtils = {
         
         if (theme === 'dark') {
             page.classList.add('theme-dark');
-            icon.textContent = ' Солнце';
+            icon.textContent = THEME.DARK.icon;
         } else {
             page.classList.remove('theme-dark');
-            icon.textContent = ' Луна';
+            icon.textContent = THEME.LIGHT.icon;
         }
     },
     
