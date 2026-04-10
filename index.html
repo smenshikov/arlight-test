@@ -6,7 +6,7 @@
     <title>Адаптивные карточки</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="page">
+<body class="page transition-theme">
     <!-- Header -->
     <header class="header">
         <div class="container">
@@ -26,54 +26,54 @@
                 <h2 class="cards__title visually-hidden">Card Grid</h2>
                 <div class="cards__grid">
                     <!-- Card 1 -->
-                    <article class="card">
-                        <h3 class="card__title">Веб-разработка</h3>
-                        <p class="card__description">
+                    <article class="card panel">
+                        <h3 class="card__title title title--medium">Веб-разработка</h3>
+                        <p class="card__description text-muted">
                             Современная веб-разработка требует знания HTML5, CSS3 и JavaScript.
                             Создание адаптивных макетов с Flexbox и Grid обеспечивает совместимость со всеми устройствами.
                             Оптимизация производительности является ключом к пользовательскому опыту.
                         </p>
-                        <button class="card__button" type="button">Узнать больше</button>
+                        <button class="card__button btn" type="button">Узнать больше</button>
                     </article>
 
                     <!-- Card 2 -->
-                    <article class="card">
-                        <h3 class="card__title">UI/UX Дизайн</h3>
-                        <p class="card__description">
+                    <article class="card panel">
+                        <h3 class="card__title title title--medium">UI/UX Дизайн</h3>
+                        <p class="card__description text-muted">
                             Дизайн пользовательского интерфейса фокусируется на создании интуитивных и визуально привлекательных макетов.
                             Исследование пользовательского опыта помогает понять поведение и потребности пользователей.
                             Системы дизайна обеспечивают согласованность между продуктами.
                         </p>
-                        <button class="card__button" type="button">Изучить</button>
+                        <button class="card__button btn" type="button">Изучить</button>
                     </article>
 
                     <!-- Card 3 -->
-                    <article class="card">
-                        <h3 class="card__title">Frontend фреймворки</h3>
-                        <p class="card__description">
+                    <article class="card panel">
+                        <h3 class="card__title title title--medium">Frontend фреймворки</h3>
+                        <p class="card__description text-muted">
                             React, Vue и Angular - популярные frontend фреймворки.
                             Компонентная архитектура улучшает переиспользование кода.
                             Решения для управления состоянием обрабатывают сложные данные приложения.
                         </p>
-                        <button class="card__button" type="button">Открыть</button>
+                        <button class="card__button btn" type="button">Открыть</button>
                     </article>
 
                     <!-- Card 4 -->
-                    <article class="card">
-                        <h3 class="card__title">Производительность</h3>
-                        <p class="card__description">
+                    <article class="card panel">
+                        <h3 class="card__title title title--medium">Производительность</h3>
+                        <p class="card__description text-muted">
                             Производительность веб-сайта влияет на вовлеченность пользователей и SEO-рейтинги.
                             Ленивая загрузка и разделение кода сокращают время первоначальной загрузки.
                             Оптимизация изображений и стратегии кэширования улучшают скорость.
                         </p>
-                        <button class="card__button" type="button">Оптимизировать</button>
+                        <button class="card__button btn" type="button">Оптимизировать</button>
                     </article>
                 </div>
             </section>
 
             <!-- Subscription form -->
-            <section class="subscription">
-                <h2 class="subscription__title">Подписаться на рассылку</h2>
+            <section class="subscription panel">
+                <h2 class="subscription__title title title--large">Подписаться на рассылку</h2>
                 <form class="subscription__form" id="subscriptionForm" novalidate>
                     <div class="subscription__field-group">
                         <input 
@@ -82,16 +82,16 @@
                             id="emailInput"
                             placeholder="Введите ваш email"
                         >
-                        <button class="subscription__button" type="submit" formnovalidate>Подписаться</button>
+                        <button class="subscription__button btn" type="submit" formnovalidate>Подписаться</button>
                     </div>
                     <div class="subscription__error" id="errorMessage"></div>
                 </form>
                 <div class="subscription__subscribers">
-                    <h3 class="subscription__subscribers-title">Подписчики:</h3>
+                    <h3 class="subscription__subscribers-title title title--small">Подписчики:</h3>
                     <ul class="subscription__subscribers-list" id="subscribersList">
-                        <li class="subscription__subscriber-item">john@example.com</li>
-                        <li class="subscription__subscriber-item">sarah@example.com</li>
-                        <li class="subscription__subscriber-item">mike@example.com</li>
+                        <li class="subscription__subscriber-item text-muted">john@example.com</li>
+                        <li class="subscription__subscriber-item text-muted">sarah@example.com</li>
+                        <li class="subscription__subscriber-item text-muted">mike@example.com</li>
                     </ul>
                 </div>
             </section>
@@ -99,7 +99,7 @@
     </main>
 
     <!-- Theme toggle button -->
-    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+    <button class="theme-toggle btn" id="themeToggle" type="button" aria-label="Toggle theme">
         <span class="theme-toggle__icon"> Луна</span>
     </button>
 

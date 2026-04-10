@@ -16,7 +16,6 @@ body {
     line-height: 1.5;
     color: var(--text-color, #333);
     background-color: var(--bg-color, #fff);
-    transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 .visually-hidden {
@@ -73,7 +72,6 @@ body {
     background-color: var(--header-bg);
     padding: 20px 0;
     border-bottom: 1px solid var(--card-border);
-    transition: background-color 0.3s ease;
 }
 
 .header__container {
@@ -137,44 +135,8 @@ body {
     }
 }
 
-/* Card */
-.card {
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    padding: 24px;
-    box-shadow: var(--card-shadow);
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.card__title {
-    margin: 0 0 16px;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--text-color);
-}
-
-.card__description {
-    margin: 0 0 24px;
-    color: var(--text-color);
-    opacity: 0.8;
-    flex-grow: 1;
-    line-height: 1.6;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.card__button {
+/* Common button styles */
+.btn {
     background-color: var(--button-bg);
     color: white;
     border: none;
@@ -184,32 +146,102 @@ body {
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.1s ease;
-    margin-top: auto;
 }
 
-.card__button:hover {
+.btn:hover {
     background-color: var(--button-hover);
 }
 
-.card__button:active {
+.btn:active {
     transform: translateY(1px);
 }
 
-/* Subscription section */
-.subscription {
+/* Common panel/card styles */
+.panel {
     background-color: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 8px;
-    padding: 32px;
     box-shadow: var(--card-shadow);
     transition: background-color 0.3s ease;
 }
 
-.subscription__title {
-    margin: 0 0 24px;
-    font-size: 1.5rem;
-    font-weight: 600;
+/* Common title styles */
+.title {
+    margin: 0;
     color: var(--text-color);
+    font-weight: 600;
+}
+
+.title--large {
+    font-size: 1.5rem;
+}
+
+.title--medium {
+    font-size: 1.25rem;
+}
+
+.title--small {
+    font-size: 1.125rem;
+}
+
+/* Common text styles */
+.text-muted {
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+/* Common transitions */
+.transition-theme {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.transition-transform {
+    transition: transform 0.2s ease;
+}
+
+.transition-shadow {
+    transition: box-shadow 0.2s ease;
+}
+
+/* Card */
+.card {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card__title {
+    margin-bottom: 16px;
+}
+
+.card__description {
+    margin: 0 0 24px;
+    flex-grow: 1;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card__button {
+    margin-top: auto;
+}
+
+/* Subscription section */
+.subscription {
+    padding: 32px;
+}
+
+.subscription__title {
+    margin-bottom: 24px;
 }
 
 .subscription__form {
@@ -249,27 +281,9 @@ body {
 }
 
 .subscription__button {
-    background-color: var(--button-bg);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 12px 24px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    
     @media (max-width: 576px) {
         width: 100%;
     }
-}
-
-.subscription__button:hover {
-    background-color: var(--button-hover);
-}
-
-.subscription__button:active {
-    transform: translateY(1px);
 }
 
 .subscription__error {
@@ -285,10 +299,7 @@ body {
 }
 
 .subscription__subscribers-title {
-    margin: 0 0 16px;
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: var(--text-color);
+    margin-bottom: 16px;
 }
 
 .subscription__subscribers-list {
@@ -299,8 +310,6 @@ body {
 
 .subscription__subscriber-item {
     padding: 8px 0;
-    color: var(--text-color);
-    opacity: 0.8;
     border-bottom: 1px solid var(--card-border);
     transition: opacity 0.2s ease;
 }
@@ -318,21 +327,16 @@ body {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: var(--button-bg);
-    color: white;
-    border: none;
     border-radius: 50%;
     width: 56px;
     height: 56px;
     font-size: 1.5rem;
-    cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     z-index: 1000;
 }
 
 .theme-toggle:hover {
-    background-color: var(--button-hover);
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
@@ -366,6 +370,51 @@ body {
 .card:nth-child(2) { animation-delay: 0.2s; }
 .card:nth-child(3) { animation-delay: 0.3s; }
 .card:nth-child(4) { animation-delay: 0.4s; }
+
+/* Notification animations */
+@keyframes fadeInDown {
+    from {
+        transform: translateX(-50%) translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOutUp {
+    from {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(-50%) translateY(-20px);
+        opacity: 0;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
