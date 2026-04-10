@@ -89,7 +89,6 @@ const animations = {
 
     Object.assign(element.style, defaults, properties);
 
-    // todo: нужно ли это и зачем?
     // Trigger reflow
     element.offsetHeight;
 
