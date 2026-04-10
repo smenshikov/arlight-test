@@ -198,18 +198,7 @@ function validateEmail(email) {
   // Allows: letters (a-z, A-Z), numbers, dots, underscores, hyphens, @, and dots in domain
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  if (!emailRegex.test(trimmedEmail)) {
-    return false;
-  }
-
-  // todo: вернуться как будто лишнее
-  const atIndex = trimmedEmail.indexOf('@');
-  if (atIndex === -1 || atIndex === 0) return false;
-
-  const domainPart = trimmedEmail.substring(atIndex + 1);
-  const dotIndex = domainPart.indexOf('.');
-
-  return dotIndex > 0 && dotIndex < domainPart.length - 1;
+  return emailRegex.test(trimmedEmail);
 }
 
 subscriptionForm.addEventListener('submit', e => {
