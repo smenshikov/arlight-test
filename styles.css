@@ -50,6 +50,16 @@ body {
     --input-border: #ced4da;
     --input-focus: #007bff;
     --error-color: #dc3545;
+    
+    /* Z-index layers */
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-fixed: 300;
+    --z-modal-backdrop: 400;
+    --z-modal: 500;
+    --z-popover: 600;
+    --z-tooltip: 700;
+    --z-notification: 800;
 }
 
 /* Dark theme */
@@ -189,14 +199,6 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.transition-transform {
-    transition: transform 0.2s ease;
-}
-
-.transition-shadow {
-    transition: box-shadow 0.2s ease;
-}
-
 /* Card */
 .card {
     padding: 24px;
@@ -327,7 +329,7 @@ body {
     font-size: 1.5rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    z-index: 1000;
+    z-index: var(--z-fixed);
 }
 
 .theme-toggle:hover {
@@ -376,7 +378,7 @@ body {
     padding: 16px 24px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    z-index: 1001;
+    z-index: var(--z-notification);
     max-width: 400px;
     text-align: center;
     animation: fadeInDown 0.3s ease;
