@@ -45,15 +45,22 @@ self.addEventListener('connect', event => {
   port.addEventListener('message', event => {
     const message = event.data;
 
-    // Update last seen time for heartbeat
-    const connection = connections.find(c => c.id === connectionId);
-    if (connection) {
-      connection.lastSeen = Date.now();
-    }
-
     switch (message.type) {
-      case 'heartbeat':
-        // Connection is alive, just update last seen
+      case 'heartbeat': {
+        // Connection is alive, update last seen timestamp
+        const connection = connections.find(c => c.id === connectionId);
+        if (connection) {
+          connection.lastSeen = Date.now();
+        }
+        break;
+      }
+      case 'disconnect':
+        // Tab is closing, remove connection immediately
+        removeConnection(connectionId);
+        break;
+      case 'initTheme':
+        currentTheme = message.theme;
+        broadcastTheme();
         break;
       case 'theme':
         currentTheme = message.theme;
