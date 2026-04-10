@@ -1,6 +1,7 @@
 # Arlight Test Project
 
-Веб-приложение для демонстрации навыков фронтенд-разработки с использованием современных веб-технологий.
+1. Веб-приложение для демонстрации.
+2. Доступно по адресу: [https://smenshikov.github.io/arlight-test](https://smenshikov.github.io/arlight-test)
 
 ## Обзор проекта
 
@@ -122,12 +123,6 @@ http://localhost:3000
 ## Деплой на GitHub Pages
 
 Проект настроен для автоматического деплоя на GitHub Pages.
-
-### Автоматический деплой через GitHub Actions
-
-1. Запушьте код в ветку `master`
-2. GitHub Actions автоматически соберёт и задеплоит сайт
-3. Сайт будет доступен по адресу: `https://<username>.github.io/<repository-name>`
 
 ### Ручной деплой
 

@@ -13,7 +13,7 @@
     "lint:format": "npm run lint:fix && npm run format",
     "prepare": "husky"
   },
-  "homepage": "https://<username>.github.io/<repository-name>",
+  "homepage": "https://smenshikov.github.io/arlight-test",
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix",
