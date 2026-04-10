@@ -320,6 +320,10 @@ body {
 
 /* Theme toggle button */
 .theme-toggle {
+    background-color: var(--button-bg);
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
     position: fixed;
     bottom: 20px;
     right: 20px;
