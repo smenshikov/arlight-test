@@ -4,6 +4,21 @@ let currentTheme = 'light';
 let tabCount = 0;
 let heartbeatIntervals = new Map();
 
+// Common utilities
+const workerUtils = {
+    // Broadcast message to all connections
+    broadcast(message) {
+        connections.forEach(connection => {
+            try {
+                connection.port.postMessage(message);
+            } catch (error) {
+                // Connection is dead, remove it
+                removeConnection(connection.id);
+            }
+        });
+    }
+};
+
 // Handle new connections
 self.addEventListener('connect', (event) => {
     const port = event.ports[0];
@@ -107,30 +122,16 @@ function updateTabCount() {
 
 // Broadcast tab count to all connected tabs
 function broadcastTabCount() {
-    connections.forEach(connection => {
-        try {
-            connection.port.postMessage({
-                type: 'tabCount',
-                count: connections.length
-            });
-        } catch (error) {
-            // Connection is dead, remove it
-            removeConnection(connection.id);
-        }
+    workerUtils.broadcast({
+        type: 'tabCount',
+        count: connections.length
     });
 }
 
 // Broadcast theme to all connected tabs
 function broadcastTheme() {
-    connections.forEach(connection => {
-        try {
-            connection.port.postMessage({
-                type: 'theme',
-                theme: currentTheme
-            });
-        } catch (error) {
-            // Connection is dead, remove it
-            removeConnection(connection.id);
-        }
+    workerUtils.broadcast({
+        type: 'theme',
+        theme: currentTheme
     });
 }

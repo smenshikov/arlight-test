@@ -3,6 +3,119 @@ let sharedWorker;
 let workerPort;
 let heartbeatInterval;
 
+// Common utilities
+const utils = {
+    // Get DOM element safely
+    getElement(selector) {
+        return document.querySelector(selector);
+    },
+    
+    // Get all DOM elements
+    getElements(selector) {
+        return document.querySelectorAll(selector);
+    },
+    
+    // Create element with classes and content
+    createElement(tag, className = '', content = '') {
+        const element = document.createElement(tag);
+        if (className) element.className = className;
+        if (content) element.textContent = content;
+        return element;
+    },
+    
+    // Animate element with CSS transitions
+    animateElement(element, properties, duration = 300) {
+        element.style.transition = `all ${duration}ms ease`;
+        Object.assign(element.style, properties);
+    }
+};
+
+// Animation utilities
+const animations = {
+    // Show notification with consistent styling
+    showNotification(message, title = '', type = 'info') {
+        const notification = utils.createElement('div', 'notification');
+        
+        // Add modifier for success type
+        if (type === 'success') {
+            notification.classList.add('notification--success');
+        }
+        
+        if (title) {
+            notification.innerHTML = `
+                <div class="notification__title">${title}</div>
+                <div class="notification__message">${message}</div>
+            `;
+        } else {
+            notification.innerHTML = `<div class="notification__message">${message}</div>`;
+        }
+        
+        document.body.appendChild(notification);
+        
+        // Auto remove after delay
+        setTimeout(() => {
+            notification.style.animation = 'fadeOutUp 0.3s ease';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, type === 'success' ? 3000 : 2000);
+    },
+    
+    // Animate element appearance
+    animateIn(element, properties = {}) {
+        const defaults = {
+            opacity: '0',
+            transform: 'translateY(-10px)'
+        };
+        
+        Object.assign(element.style, defaults, properties);
+        
+        // Trigger reflow
+        element.offsetHeight;
+        
+        utils.animateElement(element, {
+            opacity: '1',
+            transform: 'translateY(0)'
+        });
+    }
+};
+
+// Theme utilities
+const themeUtils = {
+    // Get theme elements
+    getElements() {
+        return {
+            page: utils.getElement('.page'),
+            icon: utils.getElement('.theme-toggle__icon'),
+            toggle: utils.getElement('#themeToggle')
+        };
+    },
+    
+    // Update theme UI
+    updateUI(theme) {
+        const { page, icon } = this.getElements();
+        
+        if (theme === 'dark') {
+            page.classList.add('theme-dark');
+            icon.textContent = ' Солнце';
+        } else {
+            page.classList.remove('theme-dark');
+            icon.textContent = ' Луна';
+        }
+    },
+    
+    // Toggle theme
+    toggle() {
+        const { page } = this.getElements();
+        const isDark = page.classList.toggle('theme-dark');
+        const newTheme = isDark ? 'dark' : 'light';
+        this.updateUI(newTheme);
+        return newTheme;
+    }
+};
+
 // Initialize Shared Worker
 function initSharedWorker() {
     try {
@@ -45,7 +158,7 @@ function handleWorkerMessage(event) {
 
 // Update tabs counter display
 function updateTabsCounter(count) {
-    const tabsCounterElement = document.getElementById('tabsCounter');
+    const tabsCounterElement = utils.getElement('#tabsCounter');
     if (tabsCounterElement) {
         tabsCounterElement.textContent = count;
     }
@@ -53,48 +166,26 @@ function updateTabsCounter(count) {
 
 // Update theme
 function updateTheme(theme) {
-    const page = document.querySelector('.page');
-    const themeIcon = document.querySelector('.theme-toggle__icon');
-    
-    if (theme === 'dark') {
-        page.classList.add('theme-dark');
-        themeIcon.textContent = ' Солнце';
-    } else {
-        page.classList.remove('theme-dark');
-        themeIcon.textContent = ' Луна';
-    }
-    
-    // Also save to localStorage as backup
+    themeUtils.updateUI(theme);
     localStorage.setItem('theme', theme);
 }
 
 // Fallback theme initialization for browsers without Shared Worker support
 function initThemeFallback() {
-    const themeToggle = document.getElementById('themeToggle');
-    const page = document.querySelector('.page');
-    const themeIcon = document.querySelector('.theme-toggle__icon');
-    
     const savedTheme = localStorage.getItem('theme') || 'light';
     updateTheme(savedTheme);
     
-    themeToggle.addEventListener('click', () => {
-        const isDark = page.classList.toggle('theme-dark');
-        const newTheme = isDark ? 'dark' : 'light';
-        themeIcon.textContent = isDark ? ' Солнце' : ' Луна';
+    const { toggle } = themeUtils.getElements();
+    toggle.addEventListener('click', () => {
+        const newTheme = themeUtils.toggle();
         localStorage.setItem('theme', newTheme);
     });
 }
 
-// Theme toggle functionality
-const themeToggle = document.getElementById('themeToggle');
-const page = document.querySelector('.page');
-const themeIcon = document.querySelector('.theme-toggle__icon');
-
 // Theme toggle event with Shared Worker
-themeToggle.addEventListener('click', () => {
-    const isDark = page.classList.toggle('theme-dark');
-    const newTheme = isDark ? 'dark' : 'light';
-    themeIcon.textContent = isDark ? ' Солнце' : ' Луна';
+const { toggle } = themeUtils.getElements();
+toggle.addEventListener('click', () => {
+    const newTheme = themeUtils.toggle();
     
     // Send theme change to Shared Worker
     if (workerPort) {
@@ -103,7 +194,6 @@ themeToggle.addEventListener('click', () => {
             theme: newTheme
         });
     } else {
-        // Fallback to localStorage
         localStorage.setItem('theme', newTheme);
     }
 });
@@ -112,10 +202,10 @@ themeToggle.addEventListener('click', () => {
 // The counter will be automatically updated when the worker connects
 
 // Subscription form functionality
-const subscriptionForm = document.getElementById('subscriptionForm');
-const emailInput = document.getElementById('emailInput');
-const errorMessage = document.getElementById('errorMessage');
-const subscribersList = document.getElementById('subscribersList');
+const subscriptionForm = utils.getElement('#subscriptionForm');
+const emailInput = utils.getElement('#emailInput');
+const errorMessage = utils.getElement('#errorMessage');
+const subscribersList = utils.getElement('#subscribersList');
 
 // Email validation function - checks for @ and dot after @
 function validateEmail(email) {
@@ -171,44 +261,30 @@ subscriptionForm.addEventListener('submit', (e) => {
 
 // Add subscriber to list
 function addSubscriber(email) {
-    const listItem = document.createElement('li');
-    listItem.className = 'subscription__subscriber-item';
-    listItem.textContent = email;
-    
-    // Add animation
-    listItem.style.opacity = '0';
-    listItem.style.transform = 'translateY(-10px)';
-    
+    const listItem = utils.createElement('li', 'subscription__subscriber-item text-muted', email);
     subscribersList.appendChild(listItem);
     
     // Animate in
     setTimeout(() => {
-        listItem.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-        listItem.style.opacity = '1';
-        listItem.style.transform = 'translateY(0)';
+        animations.animateIn(listItem);
     }, 10);
 }
 
 // Show error message with smooth animation
 function showError(message) {
     errorMessage.textContent = message;
-    errorMessage.style.opacity = '0';
-    errorMessage.style.transform = 'translateY(-5px)';
-    
-    // Trigger reflow
-    errorMessage.offsetHeight;
-    
-    errorMessage.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-    errorMessage.style.opacity = '1';
-    errorMessage.style.transform = 'translateY(0)';
+    animations.animateIn(errorMessage, {
+        transform: 'translateY(-5px)'
+    });
 }
 
 // Hide error message with smooth animation
 function hideError() {
     if (errorMessage.textContent) {
-        errorMessage.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-        errorMessage.style.opacity = '0';
-        errorMessage.style.transform = 'translateY(-5px)';
+        utils.animateElement(errorMessage, {
+            opacity: '0',
+            transform: 'translateY(-5px)'
+        });
         
         setTimeout(() => {
             errorMessage.textContent = '';
@@ -226,137 +302,26 @@ emailInput.addEventListener('input', () => {
 
 // Show success message
 function showSuccessMessage() {
-    const successMessage = document.createElement('div');
-    successMessage.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background-color: #28a745;
-        color: white;
-        padding: 12px 20px;
-        border-radius: 6px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        z-index: 1001;
-        animation: slideIn 0.3s ease;
-    `;
-    successMessage.textContent = 'Успешная подписка!';
-    
-    document.body.appendChild(successMessage);
-    
-    // Remove after 3 seconds
-    setTimeout(() => {
-        successMessage.style.animation = 'slideOut 0.3s ease';
-        setTimeout(() => {
-            document.body.removeChild(successMessage);
-        }, 300);
-    }, 3000);
+    animations.showNotification('Успешная подписка!', '', 'success');
 }
 
-// Add slide animations
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideIn {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes slideOut {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
 
 // Card button interactions
-const cardButtons = document.querySelectorAll('.card__button');
+const cardButtons = utils.getElements('.card__button');
+const cardData = [
+    { title: 'Веб-разработка', message: 'Изучение ресурсов по веб-разработке...' },
+    { title: 'UI/UX Дизайн', message: 'Открытие принципов UI/UX дизайна...' },
+    { title: 'Frontend фреймворки', message: 'Изучение frontend фреймворков...' },
+    { title: 'Производительность', message: 'Оптимизация веб-производительности...' }
+];
 
 cardButtons.forEach((button, index) => {
     button.addEventListener('click', () => {
-        const cardTitles = ['Веб-разработка', 'UI/UX Дизайн', 'Frontend фреймворки', 'Производительность'];
-        const messages = [
-            'Изучение ресурсов по веб-разработке...',
-            'Открытие принципов UI/UX дизайна...',
-            'Изучение frontend фреймворков...',
-            'Оптимизация веб-производительности...'
-        ];
-        
-        showNotification(messages[index], cardTitles[index]);
+        const { title, message } = cardData[index];
+        animations.showNotification(message, title);
     });
 });
 
-// Show notification for card buttons
-function showNotification(message, title) {
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: var(--button-bg);
-        color: white;
-        padding: 16px 24px;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        z-index: 1001;
-        max-width: 400px;
-        text-align: center;
-        animation: fadeInDown 0.3s ease;
-    `;
-    
-    notification.innerHTML = `
-        <div style="font-weight: 600; margin-bottom: 8px;">${title}</div>
-        <div style="font-size: 0.9rem; opacity: 0.9;">${message}</div>
-    `;
-    
-    document.body.appendChild(notification);
-    
-    // Remove after 2 seconds
-    setTimeout(() => {
-        notification.style.animation = 'fadeOutUp 0.3s ease';
-        setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 300);
-    }, 2000);
-}
-
-// Add fade animations
-const fadeStyle = document.createElement('style');
-fadeStyle.textContent = `
-    @keyframes fadeInDown {
-        from {
-            transform: translateX(-50%) translateY(-20px);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes fadeOutUp {
-        from {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(-50%) translateY(-20px);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(fadeStyle);
 
 // Handle window resize for responsive behavior
 let resizeTimer;
