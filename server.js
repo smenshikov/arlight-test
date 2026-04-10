@@ -31,5 +31,4 @@ app.get('/', (req, res) => {
 app.listen(PORT, 'localhost', () => {
   console.log(`Server running at http://localhost:${PORT}`);
   console.log('Open your browser and navigate to http://localhost:3000');
-  console.log('Shared Worker will work correctly on localhost');
 });
