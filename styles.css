@@ -17,6 +17,12 @@
   --input-focus: #007bff;
   --error-color: #dc3545;
 
+  /* Breakpoints */
+  --bp-desktop: 1024px;
+  --bp-tablet: 768px;
+  --bp-mobile: 576px;
+  --bp-small: 480px;
+
   /* Z-index layers */
   --z-dropdown: 100;
   --z-sticky: 200;
@@ -127,13 +133,12 @@ body {
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 
-  /*todo: может вынести в переменные*/
-  @media (max-width: 1024px) {
+  @media (max-width: var(--bp-desktop)) {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
 
-  @media (max-width: 576px) {
+  @media (max-width: var(--bp-mobile)) {
     grid-template-columns: 1fr;
     gap: 16px;
   }
@@ -239,7 +244,7 @@ body {
   gap: 12px;
   margin-bottom: 8px;
 
-  @media (max-width: 576px) {
+  @media (max-width: var(--bp-mobile)) {
     flex-direction: column;
   }
 }
@@ -269,7 +274,7 @@ body {
 }
 
 .subscription__button {
-  @media (max-width: 576px) {
+  @media (max-width: var(--bp-mobile)) {
     width: 100%;
   }
 }
@@ -412,7 +417,7 @@ body {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: var(--bp-tablet)) {
   .header__title {
     font-size: 1.5rem;
   }
@@ -426,7 +431,7 @@ body {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: var(--bp-small)) {
   .container {
     padding: 0 16px;
   }
