@@ -1,35 +1,115 @@
+// Shared Worker setup
+let sharedWorker;
+let workerPort;
+let heartbeatInterval;
+
+// Initialize Shared Worker
+function initSharedWorker() {
+    try {
+        sharedWorker = new SharedWorker('./shared-worker.js');
+        workerPort = sharedWorker.port;
+        
+        workerPort.addEventListener('message', handleWorkerMessage);
+        workerPort.start();
+        
+        // Start heartbeat to keep connection alive
+        heartbeatInterval = setInterval(() => {
+            if (workerPort) {
+                workerPort.postMessage({ type: 'heartbeat' });
+            }
+        }, 3000);
+        
+        // Request current data
+        workerPort.postMessage({ type: 'getTabCount' });
+        workerPort.postMessage({ type: 'getTheme' });
+    } catch (error) {
+        console.error('Shared Worker not supported:', error);
+        // Fallback to localStorage for theme
+        initThemeFallback();
+    }
+}
+
+// Handle messages from Shared Worker
+function handleWorkerMessage(event) {
+    const message = event.data;
+    
+    switch (message.type) {
+        case 'tabCount':
+            updateTabsCounter(message.count);
+            break;
+        case 'theme':
+            updateTheme(message.theme);
+            break;
+    }
+}
+
+// Update tabs counter display
+function updateTabsCounter(count) {
+    const tabsCounterElement = document.getElementById('tabsCounter');
+    if (tabsCounterElement) {
+        tabsCounterElement.textContent = count;
+    }
+}
+
+// Update theme
+function updateTheme(theme) {
+    const page = document.querySelector('.page');
+    const themeIcon = document.querySelector('.theme-toggle__icon');
+    
+    if (theme === 'dark') {
+        page.classList.add('theme-dark');
+        themeIcon.textContent = ' Солнце';
+    } else {
+        page.classList.remove('theme-dark');
+        themeIcon.textContent = ' Луна';
+    }
+    
+    // Also save to localStorage as backup
+    localStorage.setItem('theme', theme);
+}
+
+// Fallback theme initialization for browsers without Shared Worker support
+function initThemeFallback() {
+    const themeToggle = document.getElementById('themeToggle');
+    const page = document.querySelector('.page');
+    const themeIcon = document.querySelector('.theme-toggle__icon');
+    
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    updateTheme(savedTheme);
+    
+    themeToggle.addEventListener('click', () => {
+        const isDark = page.classList.toggle('theme-dark');
+        const newTheme = isDark ? 'dark' : 'light';
+        themeIcon.textContent = isDark ? ' Солнце' : ' Луна';
+        localStorage.setItem('theme', newTheme);
+    });
+}
+
 // Theme toggle functionality
 const themeToggle = document.getElementById('themeToggle');
 const page = document.querySelector('.page');
 const themeIcon = document.querySelector('.theme-toggle__icon');
 
-// Load saved theme from localStorage
-const savedTheme = localStorage.getItem('theme') || 'light';
-if (savedTheme === 'dark') {
-    page.classList.add('theme-dark');
-    themeIcon.textContent = ' Солнце';
-}
-
-// Theme toggle event
+// Theme toggle event with Shared Worker
 themeToggle.addEventListener('click', () => {
     const isDark = page.classList.toggle('theme-dark');
+    const newTheme = isDark ? 'dark' : 'light';
     themeIcon.textContent = isDark ? ' Солнце' : ' Луна';
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    
+    // Send theme change to Shared Worker
+    if (workerPort) {
+        workerPort.postMessage({
+            type: 'theme',
+            theme: newTheme
+        });
+    } else {
+        // Fallback to localStorage
+        localStorage.setItem('theme', newTheme);
+    }
 });
 
-// Tabs counter functionality
-let tabsCounter = 0;
-const tabsCounterElement = document.getElementById('tabsCounter');
-
-// Simulate tab opening (for demonstration)
-function incrementTabsCounter() {
-    tabsCounter++;
-    tabsCounterElement.textContent = tabsCounter;
-}
-
-// Initialize with some tabs
-incrementTabsCounter();
-incrementTabsCounter();
+// Tabs counter functionality is now handled by Shared Worker
+// The counter will be automatically updated when the worker connects
 
 // Subscription form functionality
 const subscriptionForm = document.getElementById('subscriptionForm');
@@ -291,6 +371,23 @@ window.addEventListener('resize', () => {
 // Initialize page
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Page loaded successfully');
+    
+    // Initialize Shared Worker
+    initSharedWorker();
+    
+    const savedTheme = localStorage.getItem('theme') || 'light';
     console.log('Current theme:', savedTheme);
     console.log('Grid layout:', getComputedStyle(document.querySelector('.cards__grid')).gridTemplateColumns);
+});
+
+// Handle page unload to notify Shared Worker
+window.addEventListener('beforeunload', () => {
+    // Clear heartbeat
+    if (heartbeatInterval) {
+        clearInterval(heartbeatInterval);
+    }
+    
+    if (workerPort) {
+        workerPort.close();
+    }
 });
