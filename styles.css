@@ -1,8 +1,45 @@
-/* Reset and base styles */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+:root {
+  --text-color: #333;
+  --bg-color: #fff;
+  --header-bg: #f8f9fa;
+  --card-bg: #fff;
+  --card-border: #e9ecef;
+  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --button-bg: #007bff;
+  --button-hover: #0056b3;
+  --input-border: #ced4da;
+  --input-focus: #007bff;
+  --error-color: #dc3545;
+
+  /* Z-index layers */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+  --z-notification: 800;
+}
+
+.page.theme-dark {
+  --text-color: #e9ecef;
+  --bg-color: #212529;
+  --header-bg: #343a40;
+  --card-bg: #343a40;
+  --card-border: #495057;
+  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --button-bg: #0056b3;
+  --button-hover: #004085;
+  --input-border: #495057;
+  --input-focus: #0056b3;
+  --error-color: #dc3545;
 }
 
 html {
@@ -31,54 +68,12 @@ body {
   border: 0;
 }
 
-/* Container */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
-/* CSS Variables for theme */
-:root {
-  --text-color: #333;
-  --bg-color: #fff;
-  --header-bg: #f8f9fa;
-  --card-bg: #fff;
-  --card-border: #e9ecef;
-  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --button-bg: #007bff;
-  --button-hover: #0056b3;
-  --input-border: #ced4da;
-  --input-focus: #007bff;
-  --error-color: #dc3545;
-
-  /* Z-index layers */
-  --z-dropdown: 100;
-  --z-sticky: 200;
-  --z-fixed: 300;
-  --z-modal-backdrop: 400;
-  --z-modal: 500;
-  --z-popover: 600;
-  --z-tooltip: 700;
-  --z-notification: 800;
-}
-
-/* Dark theme */
-.page.theme-dark {
-  --text-color: #e9ecef;
-  --bg-color: #212529;
-  --header-bg: #343a40;
-  --card-bg: #343a40;
-  --card-border: #495057;
-  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  --button-bg: #0056b3;
-  --button-hover: #004085;
-  --input-border: #495057;
-  --input-focus: #0056b3;
-  --error-color: #dc3545;
-}
-
-/* Header */
 .header {
   background-color: var(--header-bg);
   padding: 20px 0;
@@ -111,13 +106,11 @@ body {
   color: var(--button-bg);
 }
 
-/* Main content */
 .main {
   padding: 40px 0;
   min-height: calc(100vh - 200px);
 }
 
-/* Cards section */
 .cards {
   margin-bottom: 60px;
 }
@@ -134,7 +127,7 @@ body {
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 
-  /* Responsive breakpoints */
+  /*todo: может вынести в переменные*/
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
@@ -146,7 +139,6 @@ body {
   }
 }
 
-/* Common button styles */
 .btn {
   background-color: var(--button-bg);
   color: white;
@@ -169,7 +161,6 @@ body {
   transform: translateY(1px);
 }
 
-/* Common panel/card styles */
 .panel {
   background-color: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -178,7 +169,6 @@ body {
   transition: background-color 0.3s ease;
 }
 
-/* Common title styles */
 .title {
   margin: 0;
   color: var(--text-color);
@@ -197,14 +187,12 @@ body {
   font-size: 1.125rem;
 }
 
-/* Common transitions */
 .transition-theme {
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
 }
 
-/* Card */
 .card {
   padding: 24px;
   display: flex;
@@ -234,11 +222,6 @@ body {
   overflow: hidden;
 }
 
-.card__button {
-  margin-top: auto;
-}
-
-/* Subscription section */
 .subscription {
   padding: 32px;
 }
@@ -316,22 +299,15 @@ body {
 .subscription__subscriber-item {
   padding: 8px 0;
   border-bottom: 1px solid var(--card-border);
-  transition: opacity 0.2s ease;
 }
 
 .subscription__subscriber-item:last-child {
   border-bottom: none;
 }
 
-.subscription__subscriber-item:hover {
-  opacity: 1;
-}
-
-/* Theme toggle button */
 .theme-toggle {
   background-color: var(--button-bg);
   border: none;
-  font-weight: 500;
   cursor: pointer;
   position: fixed;
   bottom: 20px;
@@ -356,12 +332,6 @@ body {
   transform: scale(0.95);
 }
 
-.theme-toggle__icon {
-  display: block;
-  transition: opacity 0.3s ease;
-}
-
-/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -390,7 +360,6 @@ body {
   animation-delay: 0.4s;
 }
 
-/* Notifications */
 .notification {
   position: fixed;
   top: 20px;
@@ -421,7 +390,6 @@ body {
   opacity: 0.9;
 }
 
-/* Notification animations */
 @keyframes fadeInDown {
   from {
     transform: translateX(-50%) translateY(-20px);
@@ -444,7 +412,6 @@ body {
   }
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .header__title {
     font-size: 1.5rem;

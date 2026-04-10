@@ -1,9 +1,7 @@
-// Shared Worker setup
 let sharedWorker;
 let workerPort;
 let heartbeatInterval;
 
-// Theme constants
 const THEME = {
   LIGHT: {
     icon: '🌙',
@@ -18,19 +16,15 @@ const NOTIFICATION_DURATION = {
   success: 3000,
 };
 
-// Common utilities
 const utils = {
-  // Get DOM element safely
   getElement(selector) {
     return document.querySelector(selector);
   },
 
-  // Get all DOM elements
   getElements(selector) {
     return document.querySelectorAll(selector);
   },
 
-  // Create element with classes and content
   createElement(tag, className = '', content = '') {
     const element = document.createElement(tag);
     if (className) element.className = className;
@@ -38,22 +32,18 @@ const utils = {
     return element;
   },
 
-  // Animate element with CSS transitions
   animateElement(element, properties, duration = 300) {
     element.style.transition = `all ${duration}ms ease`;
     Object.assign(element.style, properties);
   },
 };
 
-// Animation utilities
 const animations = {
-  // Show notification with consistent styling
   showNotification(message, title = '', type) {
     const duration = NOTIFICATION_DURATION[type];
 
     const notification = utils.createElement('div', 'notification');
 
-    // Add modifier for success type
     if (type === 'success') {
       notification.classList.add('notification--success');
     }
@@ -80,7 +70,6 @@ const animations = {
     }, duration);
   },
 
-  // Animate element appearance
   animateIn(element, properties = {}) {
     const defaults = {
       opacity: '0',
@@ -99,7 +88,6 @@ const animations = {
   },
 };
 
-// Theme utilities
 const themeUtils = {
   // Get theme elements
   getElements() {
@@ -110,7 +98,6 @@ const themeUtils = {
     };
   },
 
-  // Update theme UI
   updateUI(theme) {
     const { page, icon } = this.getElements();
 
@@ -123,7 +110,6 @@ const themeUtils = {
     }
   },
 
-  // Toggle theme
   toggle() {
     const { page } = this.getElements();
     const isDark = page.classList.toggle('theme-dark');
@@ -133,7 +119,6 @@ const themeUtils = {
   },
 };
 
-// Initialize Shared Worker
 function initSharedWorker(theme) {
   try {
     sharedWorker = new SharedWorker('./shared-worker.js');
@@ -174,7 +159,6 @@ function handleWorkerMessage(event) {
   }
 }
 
-// Update tabs counter display
 function updateTabsCounter(count) {
   const tabsCounterElement = utils.getElement('#tabsCounter');
   if (tabsCounterElement) {
@@ -182,18 +166,15 @@ function updateTabsCounter(count) {
   }
 }
 
-// Update theme
 function updateTheme(theme) {
   themeUtils.updateUI(theme);
   localStorage.setItem('theme', theme);
 }
 
-// Theme toggle event with Shared Worker
 const { toggle } = themeUtils.getElements();
 toggle.addEventListener('click', () => {
   const newTheme = themeUtils.toggle();
 
-  // Save to localStorage immediately
   localStorage.setItem('theme', newTheme);
 
   // Send theme change to Shared Worker
@@ -205,16 +186,11 @@ toggle.addEventListener('click', () => {
   }
 });
 
-// Tabs counter functionality is now handled by Shared Worker
-// The counter will be automatically updated when the worker connects
-
-// Subscription form functionality
 const subscriptionForm = utils.getElement('#subscriptionForm');
 const emailInput = utils.getElement('#emailInput');
 const errorMessage = utils.getElement('#errorMessage');
 const subscribersList = utils.getElement('#subscribersList');
 
-// Email validation function - checks for valid email format with Latin characters only
 function validateEmail(email) {
   const trimmedEmail = email.trim();
 
@@ -222,29 +198,25 @@ function validateEmail(email) {
   // Allows: letters (a-z, A-Z), numbers, dots, underscores, hyphens, @, and dots in domain
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  // Check if email matches the pattern
   if (!emailRegex.test(trimmedEmail)) {
     return false;
   }
 
-  // Additional check for proper structure
+  // todo: вернуться как будто лишнее
   const atIndex = trimmedEmail.indexOf('@');
   if (atIndex === -1 || atIndex === 0) return false;
 
   const domainPart = trimmedEmail.substring(atIndex + 1);
   const dotIndex = domainPart.indexOf('.');
 
-  // Check if there's at least one dot after @ and it's not at the beginning
   return dotIndex > 0 && dotIndex < domainPart.length - 1;
 }
 
-// Form submission handler
 subscriptionForm.addEventListener('submit', e => {
   e.preventDefault();
 
   const email = emailInput.value.trim();
 
-  // Validate email
   if (!email) {
     showError('Пожалуйста, введите адрес электронной почты');
     return;
@@ -265,17 +237,13 @@ subscriptionForm.addEventListener('submit', e => {
     return;
   }
 
-  // Add new subscriber
   addSubscriber(email);
 
-  // Clear form
   emailInput.value = '';
 
-  // Show success message
   showSuccessMessage();
 });
 
-// Add subscriber to list
 function addSubscriber(email) {
   const listItem = utils.createElement('li', 'subscription__subscriber-item', email);
   subscribersList.appendChild(listItem);
@@ -283,7 +251,6 @@ function addSubscriber(email) {
   animations.animateIn(listItem);
 }
 
-// Show error message with smooth animation
 function showError(message) {
   errorMessage.textContent = message;
   animations.animateIn(errorMessage, {
@@ -291,7 +258,6 @@ function showError(message) {
   });
 }
 
-// Hide error message with smooth animation
 function hideError() {
   if (errorMessage.textContent) {
     utils.animateElement(errorMessage, {
@@ -312,13 +278,11 @@ emailInput.addEventListener('input', () => {
     hideError();
   }
 });
-
-// Show success message
+//todo: вынести текст отдельно чтобы потом масштабировать под перевод
 function showSuccessMessage() {
   animations.showNotification('Успешная подписка!', '', 'success');
 }
 
-// Card button interactions
 const cardButtons = utils.getElements('.card__button');
 const cardData = [
   {
@@ -340,16 +304,13 @@ cardButtons.forEach((button, index) => {
   });
 });
 
-// Initialize page
 document.addEventListener('DOMContentLoaded', () => {
-  // Restore theme from localStorage first
   const savedTheme = localStorage.getItem('theme') || 'light';
   themeUtils.updateUI(savedTheme);
 
   initSharedWorker(savedTheme);
 });
 
-// Handle page unload to notify Shared Worker
 window.addEventListener('beforeunload', () => {
   // Clear heartbeat interval
   if (heartbeatInterval) {

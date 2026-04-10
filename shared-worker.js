@@ -1,9 +1,7 @@
-// Shared Worker for synchronization between tabs
 let connections = [];
 let currentTheme = 'light';
 let heartbeatIntervals = new Map();
 
-// Common utilities
 const workerUtils = {
   // Broadcast message to all connections
   broadcast(message) {
@@ -19,14 +17,12 @@ const workerUtils = {
   },
 };
 
-// Handle new connections
 self.addEventListener('connect', event => {
   const port = event.ports[0];
   const connectionId = Date.now() + Math.random();
 
   connections.push({ port, id: connectionId, lastSeen: Date.now() });
 
-  // Start heartbeat for this connection
   const heartbeatInterval = setInterval(() => {
     checkConnection(connectionId);
   }, 2000);
@@ -35,13 +31,10 @@ self.addEventListener('connect', event => {
 
   broadcastTabCount();
 
-  // Send current theme to new tab
   port.postMessage({
     type: 'theme',
     theme: currentTheme,
   });
-
-  // Handle messages from this tab
   port.addEventListener('message', event => {
     const message = event.data;
 
@@ -55,7 +48,6 @@ self.addEventListener('connect', event => {
         break;
       }
       case 'disconnect':
-        // Tab is closing, remove connection immediately
         removeConnection(connectionId);
         break;
       case 'initTheme':
@@ -81,7 +73,6 @@ self.addEventListener('connect', event => {
     }
   });
 
-  // Handle disconnection
   port.addEventListener('close', () => {
     removeConnection(connectionId);
   });
@@ -89,7 +80,6 @@ self.addEventListener('connect', event => {
   port.start();
 });
 
-// Check if connection is still alive
 function checkConnection(connectionId) {
   const connection = connections.find(c => c.id === connectionId);
   if (!connection) {
@@ -97,19 +87,16 @@ function checkConnection(connectionId) {
     return;
   }
 
-  // If no heartbeat for 5 seconds, consider connection dead
   if (Date.now() - connection.lastSeen > 5000) {
     removeConnection(connectionId);
   }
 }
 
-// Remove connection and update counters
 function removeConnection(connectionId) {
   const index = connections.findIndex(c => c.id === connectionId);
   if (index > -1) {
     connections.splice(index, 1);
 
-    // Clear heartbeat interval
     const interval = heartbeatIntervals.get(connectionId);
     if (interval) {
       clearInterval(interval);
