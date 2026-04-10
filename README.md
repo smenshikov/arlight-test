@@ -118,3 +118,21 @@ http://localhost:3000
 - Shared Worker требует HTTPS или localhost для работы
 - CSS-переменные тем определены в `:root`
 - Все асинхронные операции обёрнуты в try-catch
+
+## Деплой на GitHub Pages
+
+Проект настроен для автоматического деплоя на GitHub Pages.
+
+### Автоматический деплой через GitHub Actions
+
+1. Запушьте код в ветку `master`
+2. GitHub Actions автоматически соберёт и задеплоит сайт
+3. Сайт будет доступен по адресу: `https://<username>.github.io/<repository-name>`
+
+### Ручной деплой
+
+Для ручного деплоя используйте:
+```bash
+npm install
+npm run deploy
+```
