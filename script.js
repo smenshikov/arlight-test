@@ -267,7 +267,7 @@ emailInput.addEventListener('input', () => {
     hideError();
   }
 });
-//todo: вынести текст отдельно чтобы потом масштабировать под перевод
+
 function showSuccessMessage() {
   animations.showNotification('Успешная подписка!', '', 'success');
 }
