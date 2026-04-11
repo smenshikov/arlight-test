@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Адаптивные карточки</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="page transition-theme">
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <h1 class="header__title">Адаптивные карточки</h1>
+        <div class="header__tabs-counter">
+          <span class="header__tabs-text">Открытые вкладки:</span>
+          <span class="header__tabs-number" id="tabsCounter">0</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="main">
+      <div class="container">
+        <!-- Cards grid -->
+        <section class="cards">
+          <h2 class="cards__title visually-hidden">Card Grid</h2>
+          <div class="cards__grid">
+            <!-- Card 1 -->
+            <article class="card panel">
+              <h3 class="card__title title title--medium">Веб-разработка</h3>
+              <p class="card__description">
+                Современная веб-разработка требует знания HTML5, CSS3 и JavaScript. Создание адаптивных макетов с
+                Flexbox и Grid обеспечивает совместимость со всеми устройствами. Оптимизация производительности является
+                ключом к пользовательскому опыту.
+              </p>
+              <button class="card__button btn" type="button">Узнать больше</button>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="card panel">
+              <h3 class="card__title title title--medium">UI/UX Дизайн</h3>
+              <p class="card__description">
+                Дизайн пользовательского интерфейса фокусируется на создании интуитивных и визуально привлекательных
+                макетов. Исследование пользовательского опыта помогает понять поведение и потребности пользователей.
+                Системы дизайна обеспечивают согласованность между продуктами.
+              </p>
+              <button class="card__button btn" type="button">Изучить</button>
+            </article>
+
+            <!-- Card 3 -->
+            <article class="card panel">
+              <h3 class="card__title title title--medium">Frontend фреймворки</h3>
+              <p class="card__description">
+                React, Vue и Angular - популярные frontend фреймворки. Компонентная архитектура улучшает
+                переиспользование кода. Решения для управления состоянием обрабатывают сложные данные приложения.
+              </p>
+              <button class="card__button btn" type="button">Открыть</button>
+            </article>
+
+            <!-- Card 4 -->
+            <article class="card panel">
+              <h3 class="card__title title title--medium">Производительность</h3>
+              <p class="card__description">
+                Производительность веб-сайта влияет на вовлеченность пользователей и SEO-рейтинги. Ленивая загрузка и
+                разделение кода сокращают время первоначальной загрузки. Оптимизация изображений и стратегии кэширования
+                улучшают скорость.
+              </p>
+              <button class="card__button btn" type="button">Оптимизировать</button>
+            </article>
+          </div>
+        </section>
+
+        <!-- Subscription form -->
+        <section class="subscription panel">
+          <h2 class="subscription__title title title--large">Подписаться на рассылку</h2>
+          <form class="subscription__form" id="subscriptionForm" novalidate>
+            <div class="subscription__field-group">
+              <input type="email" class="subscription__email" id="emailInput" placeholder="Введите ваш email" />
+              <button class="subscription__button btn" type="submit" formnovalidate>Подписаться</button>
+            </div>
+            <div class="subscription__error" id="errorMessage"></div>
+          </form>
+          <div class="subscription__subscribers">
+            <h3 class="subscription__subscribers-title title title--small">Подписчики:</h3>
+            <ul class="subscription__subscribers-list" id="subscribersList">
+              <li class="subscription__subscriber-item">john@example.com</li>
+              <li class="subscription__subscriber-item">sarah@example.com</li>
+              <li class="subscription__subscriber-item">mike@example.com</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Theme toggle button -->
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+      <span class="theme-toggle__icon">🌙</span>
+    </button>
+
+    <script src="script.js"></script>
+  </body>
+</html>
